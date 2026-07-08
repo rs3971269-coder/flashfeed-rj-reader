@@ -40,7 +40,7 @@ export async function fetchArticles(opts: {
   to: number;
 }) {
   let q = supabase
-    .from("NewsData")
+    .from("Newsflash")
     .select("*")
     .order("created_at", { ascending: false })
     .range(opts.from, opts.to);
@@ -52,7 +52,7 @@ export async function fetchArticles(opts: {
 
 export async function fetchArticleById(id: number) {
   const { data, error } = await supabase
-    .from("NewsData")
+    .from("Newsflash")
     .select("*")
     .eq("id", id)
     .maybeSingle();
