@@ -1,0 +1,9 @@
+# NewsFlash
+
+> A clean, mobile-first news reader powered by AI-summarized headlines. Browse and swipe through the latest stories across categories.
+
+## Pages
+
+- [Home](/): Top news stories with AI-generated summaries.
+- [Explore](/explore): Full-screen swipeable feed of the latest stories.
+- [Saved](/saved): Bookmarked stories (coming soon).

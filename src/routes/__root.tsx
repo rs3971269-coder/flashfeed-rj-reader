@@ -83,6 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "NewsFlash — Read the news, fast" },
       { property: "og:description", content: "A clean, mobile-first news reader powered by AI-summarized headlines." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "NewsFlash" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
     ],
@@ -97,6 +98,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "NewsMediaOrganization",
+          name: "NewsFlash",
+          url: "https://flashfeed-rj-reader.lovable.app",
+          description: "A clean, mobile-first news reader powered by AI-summarized headlines.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "NewsFlash",
+          url: "https://flashfeed-rj-reader.lovable.app",
+        }),
       },
     ],
   }),

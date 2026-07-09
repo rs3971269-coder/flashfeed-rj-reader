@@ -3,7 +3,18 @@ import { User } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 
 export const Route = createFileRoute("/account")({
-  head: () => ({ meta: [{ title: "Account — NewsFlash" }] }),
+  head: () => ({
+    meta: [
+      { title: "Account — Your NewsFlash profile" },
+      { name: "description", content: "Manage your NewsFlash profile and reading preferences. Account features are coming soon." },
+      { property: "og:title", content: "Account — Your NewsFlash profile" },
+      { property: "og:description", content: "Manage your NewsFlash profile and reading preferences. Account features are coming soon." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://flashfeed-rj-reader.lovable.app/account" },
+      { name: "robots", content: "noindex" },
+    ],
+    links: [{ rel: "canonical", href: "https://flashfeed-rj-reader.lovable.app/account" }],
+  }),
   component: () => (
     <AppShell>
       <div className="mt-16 flex flex-col items-center gap-4 text-center">

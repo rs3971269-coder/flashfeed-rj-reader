@@ -9,7 +9,29 @@ import { articleImage, relativeTime } from "@/lib/categories";
 import { displayContent, displayTitle, fetchArticles, type NewsArticle } from "@/lib/supabase";
 
 export const Route = createFileRoute("/explore")({
-  head: () => ({ meta: [{ title: "Explore — NewsFlash" }] }),
+  head: () => ({
+    meta: [
+      { title: "Explore — Swipe through the latest news" },
+      { name: "description", content: "Swipe through a full-screen feed of the latest news stories with AI summaries. Curated for quick browsing on mobile." },
+      { property: "og:title", content: "Explore — Swipe through the latest news" },
+      { property: "og:description", content: "Swipe through a full-screen feed of the latest news stories with AI summaries. Curated for quick browsing on mobile." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://flashfeed-rj-reader.lovable.app/explore" },
+    ],
+    links: [{ rel: "canonical", href: "https://flashfeed-rj-reader.lovable.app/explore" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Explore — NewsFlash",
+          url: "https://flashfeed-rj-reader.lovable.app/explore",
+          description: "A curated, swipeable feed of the latest news stories with AI summaries.",
+        }),
+      },
+    ],
+  }),
   component: () => (
     <AppShell>
       <ExplorePage />
@@ -32,14 +54,18 @@ function ExplorePage() {
   if (loading) return <ArticleSkeleton />;
   if (items.length === 0) {
     return (
-      <div className="rounded-xl bg-muted p-8 text-center text-sm text-muted-foreground">
-        No articles{category ? ` in ${category}` : ""} to explore.
-      </div>
+      <>
+        <h1 className="sr-only">Explore Stories</h1>
+        <div className="rounded-xl bg-muted p-8 text-center text-sm text-muted-foreground">
+          No articles{category ? ` in ${category}` : ""} to explore.
+        </div>
+      </>
     );
   }
 
   return (
     <div className="-mx-4 -mt-4">
+      <h1 className="sr-only">Explore Stories</h1>
       <div
         className="snap-y snap-mandatory overflow-y-auto"
         style={{ height: "calc(100dvh - 3.5rem - 4.25rem)", scrollbarWidth: "none" }}

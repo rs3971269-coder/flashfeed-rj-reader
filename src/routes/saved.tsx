@@ -3,7 +3,17 @@ import { Bookmark } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 
 export const Route = createFileRoute("/saved")({
-  head: () => ({ meta: [{ title: "Saved — NewsFlash" }] }),
+  head: () => ({
+    meta: [
+      { title: "Saved — Your bookmarked stories" },
+      { name: "description", content: "Your saved NewsFlash stories, kept for later. Bookmarking is coming soon." },
+      { property: "og:title", content: "Saved — Your bookmarked stories" },
+      { property: "og:description", content: "Your saved NewsFlash stories, kept for later. Bookmarking is coming soon." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://flashfeed-rj-reader.lovable.app/saved" },
+    ],
+    links: [{ rel: "canonical", href: "https://flashfeed-rj-reader.lovable.app/saved" }],
+  }),
   component: () => (
     <AppShell>
       <ComingSoon icon="saved" title="Saved articles" subtitle="Bookmarking is coming soon." />
