@@ -8,16 +8,62 @@ import { useEffect, useState } from "react";
 import type { NewsArticle } from "@/lib/supabase";
 
 export const Route = createFileRoute("/article/$id")({
+  loader: async ({ params }) => {
+    const a = await fetchArticleById(Number(params.id));
+    return { article: a };
+  },
+  head: ({ params, loaderData }) => {
+    const a = loaderData?.article ?? null;
+    const url = `https://flashfeed-rj-reader.lovable.app/article/${params.id}`;
+    const rawTitle = a ? displayTitle(a) : "Article";
+    const title = `${rawTitle} — NewsFlash`.slice(0, 60);
+    const rawDesc = a ? displayContent(a) : "";
+    const description = (rawDesc || "Read this news story on NewsFlash — AI-summarized headlines for fast, mobile-first reading.")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 155);
+    const image = a ? articleImage(a.id, a.category, 1200, 750) : undefined;
+    const meta: Array<Record<string, string>> = [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "article" },
+      { property: "og:url", content: url },
+    ];
+    if (image) meta.push({ property: "og:image", content: image });
+    const scripts = a
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "NewsArticle",
+              headline: displayTitle(a),
+              image: image ? [image] : undefined,
+              datePublished: a.created_at,
+              dateModified: a.created_at,
+              url,
+              publisher: { "@type": "Organization", name: a.source ?? "NewsFlash" },
+              mainEntityOfPage: url,
+            }),
+          },
+        ]
+      : undefined;
+    return { meta, links: [{ rel: "canonical", href: url }], scripts };
+  },
   component: ArticlePage,
 });
 
 function ArticlePage() {
   const { id } = Route.useParams();
-  const [article, setArticle] = useState<NewsArticle | null>(null);
-  const [loading, setLoading] = useState(true);
+  const initial = Route.useLoaderData().article;
+  const [article, setArticle] = useState<NewsArticle | null>(initial);
+  const [loading, setLoading] = useState(!initial);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (initial && initial.id === Number(id)) return;
     setLoading(true);
     fetchArticleById(Number(id))
       .then((a) => {
@@ -26,7 +72,7 @@ function ArticlePage() {
       })
       .catch((e) => setError(e instanceof Error ? e.message : "Failed to load"))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, initial]);
 
   return (
     <AppShell>
