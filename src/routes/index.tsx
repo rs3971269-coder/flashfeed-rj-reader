@@ -8,6 +8,17 @@ import { useCategory } from "@/lib/category-context";
 import { fetchArticles, PAGE_SIZE, type NewsArticle } from "@/lib/supabase";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "NewsFlash — Top stories, summarized" },
+      { name: "description", content: "Browse the latest top news stories with AI-generated summaries. Fast, mobile-first reading across tech, business, sports and more." },
+      { property: "og:title", content: "NewsFlash — Top stories, summarized" },
+      { property: "og:description", content: "Browse the latest top news stories with AI-generated summaries. Fast, mobile-first reading across tech, business, sports and more." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://flashfeed-rj-reader.lovable.app/" },
+    ],
+    links: [{ rel: "canonical", href: "https://flashfeed-rj-reader.lovable.app/" }],
+  }),
   component: () => (
     <AppShell>
       <FeedPage />
