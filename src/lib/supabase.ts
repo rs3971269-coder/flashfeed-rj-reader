@@ -34,6 +34,10 @@ export function displayContent(a: NewsArticle): string {
 
 export const PAGE_SIZE = 20;
 
+export function normalizeCategoryFilter(category: string): string {
+  return category.trim().toLowerCase();
+}
+
 export async function fetchArticles(opts: {
   category?: string | null;
   from: number;
@@ -44,7 +48,7 @@ export async function fetchArticles(opts: {
     .select("*")
     .order("created_at", { ascending: false })
     .range(opts.from, opts.to);
-  if (opts.category) q = q.eq("category", opts.category);
+  if (opts.category) q = q.eq("category", normalizeCategoryFilter(opts.category));
   const { data, error } = await q;
   if (error) throw error;
   return (data ?? []) as NewsArticle[];
