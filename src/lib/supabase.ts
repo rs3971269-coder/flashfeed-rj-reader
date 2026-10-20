@@ -44,7 +44,7 @@ export async function fetchArticles(opts: {
     .select("*")
     .order("created_at", { ascending: false })
     .range(opts.from, opts.to);
-  if (opts.category) q = q.eq("category", opts.category);
+  if (opts.category) q = q.eq("category", opts.category.trim().toLowerCase());
   const { data, error } = await q;
   if (error) throw error;
   return (data ?? []) as NewsArticle[];
